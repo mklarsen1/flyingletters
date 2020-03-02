@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Text Zoom</title>
+<style>
+  body {
+    background-color: gray;
+  }
+  #output {
+    height: 2em;
+    font-size: 1em;
+    text-align: center;
+    background-color: black;
+    color: white;
+  }
+  #typer {
+    width: 100px;
+    height: 100px;
+  }
+  #zoomer {
+    opacity: 25%;
+    font-size: 4em;
+    color: red;
+    width: 2em;
+    z-index: 10;
+    position: absolute;
+    text-align: center;
+  }
+
+</style>
+</head>
+<body>
+
+<div id ="top"></div>
+<div id="zoomer">:-)</div>
+<div style="text-align: center">
+  <textarea id="typer">Type anything...
+  </textarea>
+</div>
+<div id="output"></div>
+
+<script>
+  var textInput = document.querySelector("#typer");
+  var textInputHeight = textInput.offsetHeight;
+  var topCellSpacer = document.querySelector("#top")
+  var testOutput = document.querySelector("#output");
+  var textZoom = document.querySelector("#zoomer");
+
+  setSpace();
+  window.addEventListener('resize', setSpace);
+  document.addEventListener('keydown', zoomIT);
+
+  function setSpace () {
+    var windowHeight = window.innerHeight;
+    var windowWidth = window.innerWidth;
+    textInput.style.height = windowHeight/2 + "px";
+    textInput.style.width = windowWidth/2 + "px";
+
+    var tzh = textZoom.offsetHeight;
+    var tzw = textZoom.offsetWidth;
+
+    topCellSpacer.style.height = (windowHeight - textInputHeight)/4 + "px";
+    // testOutput.style.width = windowWidth/2 + "px";
+    // testOutput.style.margin = "0 0 0 " + windowWidth/4 + "px";
+    testOutput.style.display = "none";
+
+    textZoom.style.margin =  (windowHeight-tzh)/4 + "px 0 0 " + (windowWidth-tzw)/2 + "px";
+  }
+
+  function zoomIT(l) {
+    textZoom.style.opacity = "1";
+    textZoom.style.transform = "scale(1)";
+    var zScale = 1;
+    var k = String.fromCharCode(l.keyCode)
+    // testOutput.innerHTML = String.fromCharCode(l.keyCode) // x[x.length-1];
+    textZoom.innerHTML = k;
+    var id = setInterval(zup, 10);
+    function zup() {
+      if (zScale > 9) {
+        clearInterval(id);
+        zScale = 1;
+        textZoom.style.opacity = "0";
+      }
+      zScale += 1;
+      textZoom.style.transform = "scale(" + zScale + ")";
+    }
+  }
+
+
+</script>
+
+
+</body>
+</html>
